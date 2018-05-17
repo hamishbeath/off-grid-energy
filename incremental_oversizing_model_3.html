@@ -12,7 +12,7 @@
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/DavidAdler/code/off-grid-energy/incremental_oversizing_model_3.py">/Users/DavidAdler/code/off-grid-energy/incremental_oversizing_model_3.py</a></font></td></tr></table>
     <p><tt>Created&nbsp;on&nbsp;Tue&nbsp;Feb&nbsp;13&nbsp;11:20:07&nbsp;2018<br>
 &nbsp;<br>
-@author:&nbsp;hamish</tt></p>
+@author:&nbsp;Hamish&nbsp;Beath</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -29,18 +29,42 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-dem_end_period"><strong>dem_end_period</strong></a>(annual_demand, period, deminc)</dt></dl>
- <dl><dt><a name="-energy_output"><strong>energy_output</strong></a>(initial_daily_demand, operating_period, demand_increase, discount_rate)</dt></dl>
- <dl><dt><a name="-find_cheapest"><strong>find_cheapest</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed, degradation_rate)</dt></dl>
+<td width="100%"><dl><dt><a name="-dem_end_period"><strong>dem_end_period</strong></a>(annual_demand, period, deminc)</dt><dd><tt>#&nbsp;Callable&nbsp;sub-function&nbsp;for&nbsp;end&nbsp;of&nbsp;period&nbsp;demand<br>
+&nbsp;<br>
+Function&nbsp;used&nbsp;to&nbsp;generate&nbsp;the&nbsp;end&nbsp;of&nbsp;period&nbsp;demand&nbsp;ammount&nbsp;to&nbsp;be&nbsp;used&nbsp;in<br>
+PV&nbsp;size&nbsp;function</tt></dd></dl>
+ <dl><dt><a name="-energy_output"><strong>energy_output</strong></a>(initial_daily_demand, operating_period, demand_increase, discount_rate)</dt><dd><tt>#&nbsp;Callable&nbsp;Function&nbsp;for&nbsp;Lifetime&nbsp;Energy&nbsp;Production<br>
+&nbsp;<br>
+As&nbsp;generation&nbsp;is&nbsp;exactly&nbsp;matching&nbsp;demand,&nbsp;uses&nbsp;discounted&nbsp;annual&nbsp;demand<br>
+growing&nbsp;on&nbsp;a&nbsp;compound&nbsp;basis</tt></dd></dl>
+ <dl><dt><a name="-find_cheapest"><strong>find_cheapest</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed, degradation_rate)</dt><dd><tt>#&nbsp;Find&nbsp;Cheapest&nbsp;Build&nbsp;Plan&nbsp;Function</tt></dd></dl>
  <dl><dt><a name="-incremental_build"><strong>incremental_build</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase, number_increment, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed, degradation_rate)</dt><dd><tt>#&nbsp;Set&nbsp;incremental&nbsp;installations&nbsp;to&nbsp;create&nbsp;PV&nbsp;size&nbsp;array<br>
 &nbsp;<br>
 Function&nbsp;that&nbsp;splits&nbsp;the&nbsp;operating&nbsp;period&nbsp;into&nbsp;any&nbsp;number&nbsp;of&nbsp;increments<br>
-and&nbsp;provides&nbsp;an&nbsp;array&nbsp;of&nbsp;PV&nbsp;sizes&nbsp;and&nbsp;the&nbsp;final&nbsp;operating&nbsp;years</tt></dd></dl>
- <dl><dt><a name="-npc"><strong>npc</strong></a>(pv_build_array, first_year_array, final_year_array, total_pv_array, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed)</dt></dl>
+and&nbsp;provides&nbsp;an&nbsp;array&nbsp;of&nbsp;PV&nbsp;sizes&nbsp;and&nbsp;the&nbsp;final&nbsp;operating&nbsp;years<br>
+&nbsp;<br>
+:param&nbsp;initial_daily_demand:&nbsp;Energy&nbsp;demand&nbsp;of&nbsp;the&nbsp;communmity&nbsp;at&nbsp;year&nbsp;0&nbsp;in&nbsp;Watts<br>
+:param&nbsp;operating_period:&nbsp;Lifetime&nbsp;of&nbsp;project&nbsp;in&nbsp;years<br>
+:param&nbsp;capacity_factor:<br>
+:param&nbsp;demand_increase:<br>
+:param&nbsp;number_increment:<br>
+:param&nbsp;base_bos_cost:<br>
+:param&nbsp;base_module_cost:<br>
+:param&nbsp;operation_cost:<br>
+:param&nbsp;bos_reduction:<br>
+:param&nbsp;module_reduction:<br>
+:param&nbsp;discount_rate:<br>
+:param&nbsp;rebuild_fixed:<br>
+:param&nbsp;degradation_rate:<br>
+&nbsp;<br>
+:return:&nbsp;returns&nbsp;levelized&nbsp;cost</tt></dd></dl>
+ <dl><dt><a name="-npc"><strong>npc</strong></a>(pv_build_array, first_year_array, final_year_array, total_pv_array, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed)</dt><dd><tt>#&nbsp;Callable&nbsp;Net&nbsp;Present&nbsp;Cost&nbsp;Calculator&nbsp;Function<br>
+Function&nbsp;uses&nbsp;generated&nbsp;data&nbsp;to&nbsp;calculate&nbsp;NPC&nbsp;of&nbsp;energy&nbsp;system</tt></dd></dl>
  <dl><dt><a name="-pv_deg_incdem"><strong>pv_deg_incdem</strong></a>(demand, capacity_factor)</dt></dl>
- <dl><dt><a name="-pv_size_recursive"><strong>pv_size_recursive</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase)</dt></dl>
- <dl><dt><a name="-simple_lcoe"><strong>simple_lcoe</strong></a>(npc, total_energy)</dt><dd><tt>#&nbsp;==================<br>
-#&nbsp;LCUE&nbsp;Calculator<br>
-#&nbsp;==================</tt></dd></dl>
+ <dl><dt><a name="-pv_size_recursive"><strong>pv_size_recursive</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase)</dt><dd><tt>#&nbsp;Callable&nbsp;PV&nbsp;Calculation&nbsp;Function,&nbsp;incorportates&nbsp;demand&nbsp;growth&nbsp;+&nbsp;degradation<br>
+&nbsp;<br>
+PV&nbsp;size&nbsp;function&nbsp;that&nbsp;is&nbsp;recursive&nbsp;and&nbsp;can&nbsp;be&nbsp;used&nbsp;as&nbsp;parts&nbsp;of&nbsp;other&nbsp;functions.&nbsp;Factors&nbsp;in&nbsp;up-sizing<br>
+for&nbsp;degradation,&nbsp;and&nbsp;also&nbsp;demand&nbsp;increase&nbsp;for&nbsp;the&nbsp;given&nbsp;period.</tt></dd></dl>
+ <dl><dt><a name="-simple_lcoe"><strong>simple_lcoe</strong></a>(npc, total_energy)</dt><dd><tt>#&nbsp;LCUE&nbsp;Calculator</tt></dd></dl>
 </td></tr></table>
 </body></html>

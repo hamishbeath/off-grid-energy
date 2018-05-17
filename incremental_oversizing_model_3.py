@@ -146,7 +146,7 @@ def incremental_build(
             prev_value = total_pv_array[i-1]
 
         # appends with subtraction to give values of additional build needed
-        pv_build_array = np.append(pv_build_array, item - prev_value)
+        pv_build_array = np.append(pv_build_array, value - prev_value)
 
 
     # =====================================================
