@@ -3,31 +3,11 @@
 """
 Created on Tue Feb 13 11:20:07 2018
 
-@author: hamish
+@author: Hamish Beath
 """
-# %%
-#
-# Instructions for Use in Spyder:
-#
-# 1. Load main code into the console. The main code is below. At the bottom you will find two two functions for running the program: incremental_build and find_cheapest
-
-# 2. Adjust the keyworded params for either incremental build (runs once) or find cheapest
-
-# 3. Run either incremental build or find cheapest by inserting the function into console.
-
-#
-#
-#%%
-
-#%%
-"""Main Code"""
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-# =================================
-# Find Cheapest Build Plan Function
-# =================================
 
 def find_cheapest(
         initial_daily_demand,
@@ -42,6 +22,10 @@ def find_cheapest(
         discount_rate,
         rebuild_fixed,
         degradation_rate):
+    """
+    # Find Cheapest Build Plan Function
+
+    """
 
     costs_array = np.array([])
     j_array = np.array([])
@@ -83,13 +67,6 @@ def find_cheapest(
     plt.ylabel("LCUE (kWh)")
     plt.show()
 
-# =====================================================
-# Set incremental installations to create PV size array
-# =====================================================
-
-import numpy as np
-import matplotlib.pyplot as plt
-
 def incremental_build(
         initial_daily_demand,
         operating_period,
@@ -105,42 +82,77 @@ def incremental_build(
         rebuild_fixed,
         degradation_rate):
     """
-     Function that splits the operating period into any number of increments
-     and provides an array of PV sizes and the final operating years
+    # Set incremental installations to create PV size array
+
+    Function that splits the operating period into any number of increments
+    and provides an array of PV sizes and the final operating years
+
+    :param initial_daily_demand: Energy demand of the communmity at year 0 in Watts
+    :param operating_period: Lifetime of project in years
+    :param capacity_factor:
+    :param demand_increase:
+    :param number_increment:
+    :param base_bos_cost:
+    :param base_module_cost:
+    :param operation_cost:
+    :param bos_reduction:
+    :param module_reduction:
+    :param discount_rate:
+    :param rebuild_fixed:
+    :param degradation_rate:
+
+    :return: returns levelized cost
 
     """
 
     operating_array = np.arange(0, operating_period)   # sets the array of the operating period to be split
     inc_array = np.array_split(operating_array, number_increment, axis=0) # array of sub_arrays for time periods
-    total_pv_array = np.array([])       # Create array of total PV sizes
+
+    # =====================================================
+    # Sub procedure for calcuting total PV sizes
+    # TODO: move to seperate function
+    # =====================================================
+
+    # Total PV sizes at the end of each increment
+    # TODO: size in what units?
+    total_pv_array = np.array([])
     pv_build_array = np.array([])       # Create array of PV size additions
     first_year_array =  np.array([])    # Array of first years of each increment
     final_year_array = np.array([])     # Array of last years of each increment
 
+    # calculate pv_sizes, total_pv_array
     for sub_array in inc_array:         # For loop calculates the pv size steps
         last_val = sub_array[-1]        # Takes last value of each sub array within inc_array
         first_val = sub_array[0]
-        total_pv_array = np.append(total_pv_array, (pv_size_recursive(initial_daily_demand, last_val, capacity_factor, demand_increase)))
-    #   ^ appends the total pv array with a value for each increment final year by calling the pv size function with appropriate values
-        final_year_array = np.append(final_year_array, last_val) #appends the final year array with final year from each increment
+        pv_size = pv_size_recursive(initial_daily_demand, last_val, capacity_factor, demand_increase)
+
+        # appends the total pv array with a value for each increment
+        # final year by calling the pv size function with appropriate values
+        total_pv_array = np.append(total_pv_array, pv_size)
+
+        # appends the final year array with final year from each increment
+        final_year_array = np.append(final_year_array, last_val)
         first_year_array = np.append(first_year_array, first_val)
 
-    count = 0                           #  Sets zero counter to be used for below for-loop
-    for item in total_pv_array:
-        loop_value = item               #  Variable for iterable
-        subtraction_value = total_pv_array[count-1] #  Variable for previous item in for loop
-
-        if count == 0:                  #  If statement needed as item [0] doesn't need subtraction
-            pv_build_array = np.append(pv_build_array, loop_value)
-            count += 1           # Appends with first value and adds to the count
+    # for each increment calculate difference in size to the previous
+    # increment
+    # TODO: this could be calculated in the above loop
+    for i, value in enumerate(total_pv_array):
+        if i == 0:
+            # First item doesn't need subtraction, as it has
+            # no previous increments
+            prev_value = 0
         else:
-            pv_build_array = np.append(pv_build_array, loop_value - subtraction_value) # appends with subtraction to give values of additional build needed
-            count += 1            # Adds to count, needed to subtract prevoious value
+            prev_value = total_pv_array[i-1]
+
+        # appends with subtraction to give values of additional build needed
+        pv_build_array = np.append(pv_build_array, item - prev_value)
 
 
-# =====================================================
-# Sub procedure for calcuting degraded PV amount
-# =====================================================
+    # =====================================================
+    # Sub procedure for calcuting degraded PV amount
+    # TODO: move to seperate function
+    # =====================================================
 
     count_deg = 0 #Count for function
     pv_total_deg = 0 # running total for degradation calculation
@@ -149,7 +161,6 @@ def incremental_build(
 
     for item in range(len(pv_build_array)):
         pv_build = pv_build_array[item]
-#
         if count_deg == 0:
 
             period_deg = len(inc_array[count_deg]) * degradation_rate
@@ -173,9 +184,10 @@ def incremental_build(
             count_deg += 1
             pv_total_deg += (pv_build + extra_pv + extra_from_total)
 
-# =====================================================
-# Calls npc function (below) to calculate the total npc
-# =====================================================
+    # =====================================================
+    # Calls npc function (below) to calculate the total npc
+    # TODO: move to seperate function
+    # =====================================================
 
     net_present_cost = npc(
             degraded_pv_array,
@@ -190,9 +202,10 @@ def incremental_build(
             discount_rate,
             rebuild_fixed)
 
-# ===============================================
-# Calculates total discounted electricity (below)
-# ===============================================
+    # ===============================================
+    # Calculates total discounted electricity (below)
+    # TODO: move to seperate function
+    # ===============================================
 
     total_lifetime_energy = energy_output(      # calls the total lifetime energy function (below) with respective arguments
             initial_daily_demand,
@@ -200,9 +213,10 @@ def incremental_build(
             demand_increase,
             discount_rate)
 
-# ===============================================
-# Calculates LCUE (below)
-# ===============================================
+    # ===============================================
+    # Calculates LCUE (below)
+    # TODO: move to seperate function
+    # ===============================================
 
     levelised_cost = simple_lcoe(  # calls the lcoe function (below) in order to
             net_present_cost,
@@ -218,10 +232,6 @@ def incremental_build(
     return levelised_cost
 
 
-# =============================================
-# Callable Net Present Cost Calculator Function
-# =============================================
-"""Function uses generated data to calculate NPC of energy system"""
 
 def npc(
         pv_build_array,
@@ -235,14 +245,17 @@ def npc(
         module_reduction,
         discount_rate,
         rebuild_fixed):
-
+    """
+    # Callable Net Present Cost Calculator Function
+    Function uses generated data to calculate NPC of energy system
+    """
     build_cost = 0                  # Sets empty variable to accumulate build cost
     operation_total = 0             # Sets empty O and M variable to accumulate from for-loop
 
     for i in range(len(pv_build_array)):  # Uses length of one of the arrays (all same length) to iterate
 
+        # sets the variables to be the respective iterables
         first_year, final_year, pv, total_pv  = first_year_array[i], final_year_array[i], pv_build_array[i], total_pv_array[i]
-        # ^^ sets the variables to be the respective iterables
         if first_year == 0:                 # if 0th year, no cost reduction
             bos_cost = base_bos_cost * pv       # gives initial build BOS cost
             pv_cost = base_module_cost * pv     # gives initial year module costs
@@ -271,14 +284,13 @@ def npc(
     total_npc = build_cost + operation_total    # total_npc = sum of discounted build costs at each build point and O&M costs
     return total_npc
 
-# ================================================
-# Callable Function for Lifetime Energy Production
-# ================================================
-"""As generation is exactly matching demand, uses discounted annual demand
-growing on a compound basis"""
-
 def energy_output(initial_daily_demand, operating_period, demand_increase, discount_rate):
+    """
+    # Callable Function for Lifetime Energy Production
 
+    As generation is exactly matching demand, uses discounted annual demand
+    growing on a compound basis
+    """
     annual_demand = initial_daily_demand * 365      # Converts initial daily demand into base annual figure
     total_generation = 0                            # Sets empty variable for total generation
 
@@ -288,14 +300,13 @@ def energy_output(initial_daily_demand, operating_period, demand_increase, disco
     return float(total_generation)                  # Returns total figure to main function
 
 
-# ===========================================================================
-# Callable PV Calculation Function, incorportates demand growth + degradation
-# ===========================================================================
-"""PV size function that is recursive and can be used as parts of other functions. Factors in up-sizing
-for degradation, and also demand increase for the given period."""
-
-
 def pv_size_recursive(initial_daily_demand, operating_period, capacity_factor, demand_increase):
+    """
+    # Callable PV Calculation Function, incorportates demand growth + degradation
+
+    PV size function that is recursive and can be used as parts of other functions. Factors in up-sizing
+    for degradation, and also demand increase for the given period.
+    """
 
     annual_demand = (initial_daily_demand * 365) #converts daily demand to annual
 
@@ -307,14 +318,13 @@ def pv_size_recursive(initial_daily_demand, operating_period, capacity_factor, d
     newpv = pv_deg_incdem(increased_demand, capacity_factor) # Calls function that
     return newpv #returns the pv size needed for each increment.
 
-# ==============================================
-# Callable sub-function for end of period demand
-# ==============================================
-
-"""Function used to generate the end of period demand ammount to be used in
-PV size function """
-
 def dem_end_period(annual_demand, period, deminc):
+    """
+    # Callable sub-function for end of period demand
+
+    Function used to generate the end of period demand ammount to be used in
+    PV size function
+    """
 
     new_demand = annual_demand * (deminc ** period)  # Calculates the final year of period demand
     return new_demand
@@ -326,10 +336,10 @@ def pv_deg_incdem(demand, capacity_factor):
     pv = (hourly/capacity_factor)   # calculates the pv capacity needed based
     return pv
 
-# ==================
-# LCUE Calculator
-# ==================
 def simple_lcoe(npc, total_energy):
+    """
+    # LCUE Calculator
+    """
     lcoe = npc / (total_energy / 1000)
     return lcoe
 

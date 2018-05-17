@@ -1,0 +1,46 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module incremental_oversizing_model_3</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>incremental_oversizing_model_3</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/DavidAdler/code/off-grid-energy/incremental_oversizing_model_3.py">/Users/DavidAdler/code/off-grid-energy/incremental_oversizing_model_3.py</a></font></td></tr></table>
+    <p><tt>Created&nbsp;on&nbsp;Tue&nbsp;Feb&nbsp;13&nbsp;11:20:07&nbsp;2018<br>
+&nbsp;<br>
+@author:&nbsp;hamish</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-dem_end_period"><strong>dem_end_period</strong></a>(annual_demand, period, deminc)</dt></dl>
+ <dl><dt><a name="-energy_output"><strong>energy_output</strong></a>(initial_daily_demand, operating_period, demand_increase, discount_rate)</dt></dl>
+ <dl><dt><a name="-find_cheapest"><strong>find_cheapest</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed, degradation_rate)</dt></dl>
+ <dl><dt><a name="-incremental_build"><strong>incremental_build</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase, number_increment, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed, degradation_rate)</dt><dd><tt>#&nbsp;Set&nbsp;incremental&nbsp;installations&nbsp;to&nbsp;create&nbsp;PV&nbsp;size&nbsp;array<br>
+&nbsp;<br>
+Function&nbsp;that&nbsp;splits&nbsp;the&nbsp;operating&nbsp;period&nbsp;into&nbsp;any&nbsp;number&nbsp;of&nbsp;increments<br>
+and&nbsp;provides&nbsp;an&nbsp;array&nbsp;of&nbsp;PV&nbsp;sizes&nbsp;and&nbsp;the&nbsp;final&nbsp;operating&nbsp;years</tt></dd></dl>
+ <dl><dt><a name="-npc"><strong>npc</strong></a>(pv_build_array, first_year_array, final_year_array, total_pv_array, base_bos_cost, base_module_cost, operation_cost, bos_reduction, module_reduction, discount_rate, rebuild_fixed)</dt></dl>
+ <dl><dt><a name="-pv_deg_incdem"><strong>pv_deg_incdem</strong></a>(demand, capacity_factor)</dt></dl>
+ <dl><dt><a name="-pv_size_recursive"><strong>pv_size_recursive</strong></a>(initial_daily_demand, operating_period, capacity_factor, demand_increase)</dt></dl>
+ <dl><dt><a name="-simple_lcoe"><strong>simple_lcoe</strong></a>(npc, total_energy)</dt><dd><tt>#&nbsp;==================<br>
+#&nbsp;LCUE&nbsp;Calculator<br>
+#&nbsp;==================</tt></dd></dl>
+</td></tr></table>
+</body></html>

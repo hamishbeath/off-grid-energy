@@ -2,6 +2,11 @@
 
 	pip install -r requirements.txt
 
+## Build docs
+
+	pydoc -w incremental_oversizing_model
+	open incremental_oversizing_model_3.html
+
 ## Theory
 
 - If you were going to build a PV project
@@ -26,8 +31,7 @@
 - Total discounted energy - total energy production
 - Levelized costs of electricity - uniform cost agnostic of underlying energy source over lifetime of project
 
-
-- Given that you can choose to reanalyze and rebuild the plant once, twice, N times over a projects lifetime. We calculate the cheapest number of rebuilds.
+- Given that you can choose to reanalyze and rebuild the plant once, twice, N times over a projects lifetime. We calculate the cheapest number of rebuilds. Opmtize for cheapest number of rebuilds.
 
 
 ## Welcome to GitHub Pages
