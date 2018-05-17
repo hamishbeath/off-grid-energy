@@ -1,3 +1,35 @@
+## Setup
+
+	pip install -r requirements.txt
+
+## Theory
+
+- If you were going to build a PV project
+- Different approaches to modeling PV project.
+- Given declining costs of PV resources and increasing population
+- It may be economically viable to build all of PV plant at the beginning
+- Or it may be better to build the PV plant in stages.
+- Here we have the following predefined inputs based on academic data references at the end:
+
+- Compound annual demand growth - The energy demand year on year cumulatively summed.
+- PV cost reductions year on year - Balance of system (BOS) cost reductions
+- Discount rate - discount future costs of PV supplies
+- Initial daily demand - demand at year 0 of the community for energy
+- Base costs - costs for PV modules and BOS at year 0
+- Operation and maintenance costs - costs at year 0
+- Fixed rebuild costs - overhead costs for labour, time, analysis per rebuild of PV plant
+- Project lifetime - how long the project will last
+
+- Outputs:
+
+- Net present cost - Some of all costs over lifetime
+- Total discounted energy - total energy production
+- Levelized costs of electricity - uniform cost agnostic of underlying energy source over lifetime of project
+
+
+- Given that you can choose to reanalyze and rebuild the plant once, twice, N times over a projects lifetime. We calculate the cheapest number of rebuilds.
+
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/hamishbeath/off-grid-energy/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
