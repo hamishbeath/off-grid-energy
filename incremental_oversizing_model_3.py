@@ -90,17 +90,17 @@ def incremental_build(
 
     :param initial_daily_demand: Energy demand of the communmity at year 0 in Watts
     :param operating_period: Lifetime of project in years
-    :param capacity_factor:
-    :param demand_increase:
-    :param number_increment:
-    :param base_bos_cost:
-    :param base_module_cost:
-    :param operation_cost:
-    :param bos_reduction:
-    :param module_reduction:
-    :param discount_rate:
-    :param rebuild_fixed:
-    :param degradation_rate:
+    :param capacity_factor: in % terms
+    :param demand_increase: % terms
+    :param number_increment: n
+    :param base_bos_cost: $/watt
+    :param base_module_cost: $/watt
+    :param operation_cost: $/watt
+    :param bos_reduction: % terms
+    :param module_reduction: % terms
+    :param discount_rate: %
+    :param rebuild_fixed: $
+    :param degradation_rate: %
 
     :return: returns levelized cost
 
