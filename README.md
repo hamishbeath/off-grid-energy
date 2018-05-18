@@ -1,3 +1,5 @@
+# [Off Grid PV Financial Model](https://hamishbeath.github.io/off-grid-energy)
+
 ## Setup
 
 	pip install -r requirements.txt
