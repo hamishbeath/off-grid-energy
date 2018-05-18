@@ -1,3 +1,5 @@
+# [Off Grid PV Financial Model](https://hamishbeath.github.io/off-grid-energy)
+
 ## Setup
 
 	pip install -r requirements.txt
@@ -30,7 +32,6 @@
 - Net present cost - Some of all costs over lifetime
 - Total discounted energy - total energy production
 - Levelized costs of electricity - uniform cost agnostic of underlying energy source over lifetime of project
-
 - Given that you can choose to reanalyze and rebuild the plant once, twice, N times over a projects lifetime. We calculate the cheapest number of rebuilds. Opmtize for cheapest number of rebuilds.
 
 
