@@ -68,51 +68,6 @@ def find_cheapest(
     plt.show()
 
 
-def calc_total_pv(inc_array, initial_daily_demand, capacity_factor, demand_increase):
-    # =====================================================
-    # Sub procedure for calcuting total PV sizes
-    # TODO: move to seperate function
-    # =====================================================
-
-    # Total PV sizes at the end of each increment
-    # TODO: size in what units?
-    total_pv_array = np.array([])
-    pv_build_array = np.array([])       # Create array of PV size additions
-    first_year_array =  np.array([])    # Array of first years of each increment
-    final_year_array = np.array([])     # Array of last years of each increment
-
-    # calculate pv_sizes, total_pv_array
-    for sub_array in inc_array:         # For loop calculates the pv size steps
-        last_val = sub_array[-1]        # Takes last value of each sub array within inc_array
-        first_val = sub_array[0]
-        pv_size = pv_size_recursive(initial_daily_demand, last_val, capacity_factor, demand_increase)
-
-        # appends the total pv array with a value for each increment
-        # final year by calling the pv size function with appropriate values
-        total_pv_array = np.append(total_pv_array, pv_size)
-
-        # appends the final year array with final year from each increment
-        final_year_array = np.append(final_year_array, last_val)
-        first_year_array = np.append(first_year_array, first_val)
-
-    # for each increment calculate difference in size to the previous
-    # increment
-    # TODO: this could be calculated in the above loop
-    for i, value in enumerate(total_pv_array):
-        if i == 0:
-            # First item doesn't need subtraction, as it has
-            # no previous increments
-            prev_value = 0
-        else:
-            prev_value = total_pv_array[i-1]
-
-        additional_build_needed = value - prev_value
-
-        # appends with subtraction to give values of additional build needed
-        pv_build_array = np.append(pv_build_array, additional_build_needed)
-
-    return total_pv_array, pv_build_array
-
 def incremental_build(
         initial_daily_demand,
         operating_period,
@@ -158,15 +113,14 @@ def incremental_build(
     # Sub procedure for calcuting total PV sizes
     # =====================================================
 
-    # Total PV sizes at the end of each increment
-    # TODO: size in what units?
+    # Total PV sizes at the end of each increment in Watts
     total_pv_array = np.array([])
     pv_build_array = np.array([])       # Create array of PV size additions
     first_year_array =  np.array([])    # Array of first years of each increment
     final_year_array = np.array([])     # Array of last years of each increment
 
     # calculate pv_sizes, total_pv_array
-    for sub_array in inc_array:         # For loop calculates the pv size steps
+    for i, sub_array in enumerate(inc_array):         # For loop calculates the pv size steps
         last_val = sub_array[-1]        # Takes last value of each sub array within inc_array
         first_val = sub_array[0]
         pv_size = pv_size_recursive(initial_daily_demand, last_val, capacity_factor, demand_increase)
@@ -175,14 +129,6 @@ def incremental_build(
         # final year by calling the pv size function with appropriate values
         total_pv_array = np.append(total_pv_array, pv_size)
 
-        # appends the final year array with final year from each increment
-        final_year_array = np.append(final_year_array, last_val)
-        first_year_array = np.append(first_year_array, first_val)
-
-    # for each increment calculate difference in size to the previous
-    # increment
-    # TODO: this could be calculated in the above loop
-    for i, value in enumerate(total_pv_array):
         if i == 0:
             # First item doesn't need subtraction, as it has
             # no previous increments
@@ -190,11 +136,14 @@ def incremental_build(
         else:
             prev_value = total_pv_array[i-1]
 
-        additional_build_needed = value - prev_value
+        additional_build_needed = pv_size - prev_value
 
         # appends with subtraction to give values of additional build needed
         pv_build_array = np.append(pv_build_array, additional_build_needed)
 
+        # appends the final year array with final year from each increment
+        final_year_array = np.append(final_year_array, last_val)
+        first_year_array = np.append(first_year_array, first_val)
 
     # =====================================================
     # Sub procedure for calcuting degraded PV amount
@@ -204,53 +153,24 @@ def incremental_build(
     pv_total_deg = 0 # running total for degradation calculation
     degraded_pv_array = np.array([]) #
 
+    for count_deg, pv_build in enumerate(pv_build_array):
 
-    for item in range(len(pv_build_array)):
-        pv_build = pv_build_array[item]
+        num_years_in_increment = len(inc_array[count_deg])
+        period_deg = num_years_in_increment * degradation_rate
 
-        period_deg = len(inc_array[count_deg]) * degradation_rate
         # calculates degradation pecentage for the period
         # calculates extra needed for the period given the degradation
         extra_pv = pv_build - (pv_build * (1 - period_deg))
 
         if count_deg == 0:
-
-            # TODO: remove
-            # period_deg = len(inc_array[count_deg]) * degradation_rate
-            # calculates degradation pecentage for the period
-            # extra_pv = pv_build - (pv_build * (1-period_deg))
-
-            # degraded_pv = pv_build + extra_pv
             extra_from_total = 0
-
-            # TODO:remove
-            # calculates extra needed for the period given the degradation
-            # degraded_pv_array = np.append(degraded_pv_array, degraded_pv)
-            # appends the degraded_pv array with the next install amount
-            # pv_total_deg += (pv_build + extra_pv) #adjusts total
-
         else:
-
-            # TODO: remove
-            # period_deg = len(inc_array[count_deg]) * degradation_rate
-            #calculates degradation pecentage for the period
-            # extra_pv = pv_build - (pv_build * (1-period_deg))                  #calculates extra needed for the period given the degradation
-
-
             extra_from_total = pv_total_deg - (pv_total_deg * (1 - period_deg))
-
-            #calculates extra needed from the previous periods degradation
-            # degraded_pv = pv_build + extra_pv + extra_from_total
-
-            # TODO: remove
-            # degraded_pv_array = np.append(degraded_pv_array, degraded_pv)
-            # pv_total_deg += (pv_build + extra_pv + extra_from_total)
 
         pv_total_deg += (pv_build + extra_pv + extra_from_total)
         degraded_pv = pv_build + extra_pv + extra_from_total
         # appends the degraded_pv array with the next install amount
         degraded_pv_array = np.append(degraded_pv_array, degraded_pv)
-        count_deg += 1
 
     # =====================================================
     # Calls npc function (below) to calculate the total npc
@@ -299,8 +219,7 @@ def incremental_build(
 
 
 
-def npc(
-        pv_build_array,
+def npc(pv_build_array,
         first_year_array,
         final_year_array,
         total_pv_array,
